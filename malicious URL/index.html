@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Phishing URL Detector</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="card">
+
+            <div class="icon">🛡️</div>
+
+            <h1>Phishing URL Detector</h1>
+
+            <p class="subtitle">
+                Check whether a login URL looks suspicious
+            </p>
+
+            <div class="input-box">
+                <input
+                    type="text"
+                    id="urlInput"
+                    placeholder="Enter website URL..."
+                >
+
+                <button onclick="checkURL()">
+                    Scan URL
+                </button>
+            </div>
+
+            <div id="result" class="result hidden">
+
+                <div id="resultIcon"></div>
+
+                <h2 id="resultTitle"></h2>
+
+                <p id="score"></p>
+
+                <div class="reasons">
+                    <h3>Detection Details</h3>
+                    <ul id="reasonList"></ul>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

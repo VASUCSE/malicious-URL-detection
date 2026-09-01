@@ -1,0 +1,225 @@
+function checkURL() {
+
+    const input = document.getElementById("urlInput");
+    const result = document.getElementById("result");
+
+    const resultIcon = document.getElementById("resultIcon");
+    const resultTitle = document.getElementById("resultTitle");
+    const scoreText = document.getElementById("score");
+    const reasonList = document.getElementById("reasonList");
+
+    let url = input.value.trim();
+
+    if (url === "") {
+        alert("Please enter a URL!");
+        return;
+    }
+
+    // Add protocol if user doesn't provide one
+    if (!/^https?:\/\//i.test(url)) {
+        url = "https://" + url;
+    }
+
+    let score = 0;
+    let reasons = [];
+
+    try {
+
+        const parsedURL = new URL(url);
+
+        const hostname = parsedURL.hostname.toLowerCase();
+
+        // --------------------------------
+        // 1. HTTPS CHECK
+        // --------------------------------
+
+        if (parsedURL.protocol !== "https:") {
+
+            score += 2;
+
+            reasons.push(
+                "Website is not using HTTPS"
+            );
+        }
+
+        // --------------------------------
+        // 2. IP ADDRESS CHECK
+        // --------------------------------
+
+        const ipPattern =
+            /^\d{1,3}(\.\d{1,3}){3}$/;
+
+        if (ipPattern.test(hostname)) {
+
+            score += 3;
+
+            reasons.push(
+                "Website uses an IP address instead of a domain"
+            );
+        }
+
+        // --------------------------------
+        // 3. @ SYMBOL
+        // --------------------------------
+
+        if (url.includes("@")) {
+
+            score += 3;
+
+            reasons.push(
+                "URL contains '@' which can hide the real destination"
+            );
+        }
+
+        // --------------------------------
+        // 4. LONG URL
+        // --------------------------------
+
+        if (url.length > 100) {
+
+            score += 1;
+
+            reasons.push(
+                "URL is unusually long"
+            );
+        }
+
+        // --------------------------------
+        // 5. SUSPICIOUS KEYWORDS
+        // --------------------------------
+
+        const keywords = [
+            "login",
+            "signin",
+            "verify",
+            "verification",
+            "account",
+            "password",
+            "secure",
+            "update",
+            "bank",
+            "confirm"
+        ];
+
+        let foundKeywords = [];
+
+        keywords.forEach(keyword => {
+
+            if (url.toLowerCase().includes(keyword)) {
+
+                foundKeywords.push(keyword);
+
+            }
+
+        });
+
+        if (foundKeywords.length > 0) {
+
+            score += Math.min(foundKeywords.length, 2);
+
+            reasons.push(
+                "Contains suspicious keywords: " +
+                foundKeywords.join(", ")
+            );
+        }
+
+        // --------------------------------
+        // 6. TOO MANY SUBDOMAINS
+        // --------------------------------
+
+        const parts = hostname.split(".");
+
+        if (parts.length > 3) {
+
+            score += 2;
+
+            reasons.push(
+                "Contains an unusually large number of subdomains"
+            );
+        }
+
+        // --------------------------------
+        // DISPLAY RESULT
+        // --------------------------------
+
+        result.classList.remove(
+            "hidden",
+            "safe",
+            "suspicious",
+            "danger"
+        );
+
+        if (score >= 5) {
+
+            result.classList.add("danger");
+
+            resultIcon.textContent = "🚨";
+
+            resultTitle.textContent =
+                "HIGH RISK - Possible Phishing";
+
+            resultTitle.style.color = "#dc2626";
+
+        } else if (score >= 3) {
+
+            result.classList.add("suspicious");
+
+            resultIcon.textContent = "⚠️";
+
+            resultTitle.textContent =
+                "SUSPICIOUS URL";
+
+            resultTitle.style.color = "#d97706";
+
+        } else {
+
+            result.classList.add("safe");
+
+            resultIcon.textContent = "✅";
+
+            resultTitle.textContent =
+                "LOW RISK";
+
+            resultTitle.style.color = "#16a34a";
+
+        }
+
+        scoreText.textContent =
+            "Risk Score: " + score;
+
+        // --------------------------------
+        // SHOW REASONS
+        // --------------------------------
+
+        reasonList.innerHTML = "";
+
+        if (reasons.length === 0) {
+
+            const li = document.createElement("li");
+
+            li.textContent =
+                "No obvious suspicious URL features detected.";
+
+            reasonList.appendChild(li);
+
+        } else {
+
+            reasons.forEach(reason => {
+
+                const li =
+                    document.createElement("li");
+
+                li.textContent = "• " + reason;
+
+                reasonList.appendChild(li);
+
+            });
+
+        }
+
+    } catch (error) {
+
+        alert("Invalid URL. Please enter a valid website URL.");
+
+    }
+}
