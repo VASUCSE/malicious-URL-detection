@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Malicious URL Detection System | AI Cybersecurity SOC</title>
+    <meta name="description" content="AI-powered Malicious and Phishing URL Detection System using static lexical feature extraction, Shannon entropy, and Scikit-Learn Random Forest classification.">
+    
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Chart.js for Threat Visualizations -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <!-- Background Cyber Grid & Ambient Glows -->
+    <div class="cyber-bg-overlay"></div>
+    <div class="ambient-glow cyan"></div>
+    <div class="ambient-glow purple"></div>
+    <div class="ambient-glow emerald"></div>
+
+    <!-- Sticky Navigation Bar -->
+    <nav class="soc-navbar" id="topNavbar">
+        <div class="nav-container">
+            <div class="nav-brand">
+                <div class="shield-icon-container">
+                    <span class="shield-pulse"></span>
+                    <span class="shield-emoji">🛡️</span>
+                </div>
+                <div class="brand-text">
+                    <span class="brand-title">MALICIOUS URL DETECTION SYSTEM</span>
+                    <span class="brand-tag">AI &amp; LEXICAL THREAT INTELLIGENCE LAB</span>
+                </div>
+            </div>
+
+            <div class="nav-links">
+                <a href="#scannerConsole" class="nav-link active"><span>⚡</span> Scanner</a>
+                <a href="#kpiMetrics" class="nav-link"><span>📈</span> Metrics</a>
+                <a href="#chartPanel" class="nav-link"><span>📊</span> Analytics</a>
+                <a href="#historyPanel" class="nav-link"><span>🕒</span> History</a>
+            </div>
+
+            <div class="nav-actions">
+                <div class="system-status-pill">
+                    <span class="status-dot pulsing"></span>
+                    <div class="status-info">
+                        <span class="status-label">ISOLATED ENGINE</span>
+                        <span class="status-sub">0 Outbound Calls</span>
+                    </div>
+                </div>
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-github-btn" title="View Source on GitHub">
+                    <svg class="github-icon" viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                    </svg>
+                    <span>GitHub</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="dashboard-wrapper">
+        <!-- Hero Section with Cybersecurity Visual -->
+        <section class="hero-section">
+            <div class="hero-content">
+                <div class="hero-badge-tag">
+                    <span class="badge-dot"></span>
+                    <span>CYBERSECURITY THREAT INTELLIGENCE PLATFORM</span>
+                </div>
+                <h1 class="hero-title">
+                    Static Lexical &amp; Machine Learning <br/>
+                    <span class="hero-highlight">Malicious URL Detection</span>
+                </h1>
+                <p class="hero-description">
+                    Safely analyze and classify unknown web addresses into <strong>Safe</strong>, <strong>Suspicious</strong>, <strong>Phishing</strong>, or <strong>Malicious</strong> categories without initiating external network connections. Built on isolated lexical feature extraction, Shannon entropy, and Random Forest classification.
+                </p>
+
+                <div class="hero-pills">
+                    <div class="hero-pill">
+                        <span class="pill-icon">🛡️</span>
+                        <span>Zero Outbound Traffic</span>
+                    </div>
+                    <div class="hero-pill">
+                        <span class="pill-icon">⚡</span>
+                        <span>Random Forest Classifier</span>
+                    </div>
+                    <div class="hero-pill">
+                        <span class="pill-icon">🔬</span>
+                        <span>18 Structural Vectors</span>
+                    </div>
+                    <div class="hero-pill">
+                        <span class="pill-icon">🗄️</span>
+                        <span>SQLite Audit History</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cybersecurity Visual: Radar & Threat Matrix -->
+            <div class="hero-visual">
+                <div class="radar-container">
+                    <div class="radar-circle circle-1"></div>
+                    <div class="radar-circle circle-2"></div>
+                    <div class="radar-circle circle-3"></div>
+                    <div class="radar-crosshair crosshair-h"></div>
+                    <div class="radar-crosshair crosshair-v"></div>
+                    <div class="radar-sweep"></div>
+                    
+                    <div class="radar-center-shield">
+                        <span class="center-icon">🛡️</span>
+                    </div>
+
+                    <!-- Ambient Floating Telemetry Nodes -->
+                    <div class="radar-node node-1" title="Entropy Vector">H(X)</div>
+                    <div class="radar-node node-2" title="Host IP Check">IPv4</div>
+                    <div class="radar-node node-3" title="RF Model">ML</div>
+                    <div class="radar-node node-4" title="Safe Boundary">RFC</div>
+                </div>
+                <div class="radar-status-caption">
+                    <span class="live-indicator"></span>
+                    <span>AIR-GAPPED STATIC SCANNER // READY</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- KPI Metric Cards Grid -->
+        <section class="metrics-grid" id="kpiMetrics">
+            <div class="metric-card" id="cardTotalScans">
+                <div class="metric-header">
+                    <span class="metric-title">TOTAL ANALYZED</span>
+                    <span class="metric-icon">🌐</span>
+                </div>
+                <div class="metric-value" id="statTotalScans">--</div>
+                <div class="metric-sub">Logged in SQLite database</div>
+            </div>
+
+            <div class="metric-card safe-card" id="cardSafeScans">
+                <div class="metric-header">
+                    <span class="metric-title">SAFE DOMAINS</span>
+                    <span class="metric-icon">✅</span>
+                </div>
+                <div class="metric-value text-safe" id="statSafeScans">--</div>
+                <div class="metric-badge safe-badge" id="statSafePercent">--% of total</div>
+            </div>
+
+            <div class="metric-card suspicious-card" id="cardSuspiciousScans">
+                <div class="metric-header">
+                    <span class="metric-title">SUSPICIOUS URLS</span>
+                    <span class="metric-icon">⚠️</span>
+                </div>
+                <div class="metric-value text-suspicious" id="statSuspiciousScans">--</div>
+                <div class="metric-badge suspicious-badge" id="statSuspiciousPercent">--% of total</div>
+            </div>
+
+            <div class="metric-card danger-card" id="cardThreatScans">
+                <div class="metric-header">
+                    <span class="metric-title">THREATS IDENTIFIED</span>
+                    <span class="metric-icon">🚨</span>
+                </div>
+                <div class="metric-value text-danger" id="statThreatScans">--</div>
+                <div class="metric-badge danger-badge" id="statThreatPercent">Phishing + Malicious</div>
+            </div>
+        </section>
+
+        <!-- Main Workspace (2-Column Grid) -->
+        <div class="main-layout">
+            <!-- Left Column: Input, Scanner, and Detailed Analysis -->
+            <section class="scanner-column">
+                <!-- URL Input Console -->
+                <div class="cyber-panel scanner-console" id="scannerConsole">
+                    <div class="panel-header">
+                        <span class="panel-tag">[ CONSOLE_INSPECT ]</span>
+                        <h2>Submit URL for Security Inspection</h2>
+                    </div>
+                    <p class="panel-desc">
+                        Static lexical analysis evaluates domain architecture, obfuscation, Shannon entropy, and URL syntax without sending packets to the target endpoint.
+                    </p>
+
+                    <form id="urlForm" class="url-input-form" onsubmit="event.preventDefault(); analyzeUrl();">
+                        <div class="input-wrapper">
+                            <span class="input-icon" title="Target URL">🔗</span>
+                            <input 
+                                type="text" 
+                                id="urlInput" 
+                                class="cyber-input" 
+                                placeholder="Enter URL to inspect (e.g., https://example.com/login or suspicious domain)"
+                                autocomplete="off"
+                                spellcheck="false"
+                                required
+                            />
+                            <button type="button" class="btn-clear" id="btnClear" onclick="clearInput()" title="Clear Input">✕</button>
+                        </div>
+                        <button type="submit" id="btnAnalyze" class="cyber-button primary-btn">
+                            <span class="btn-icon">⚡</span>
+                            <span class="btn-text">Analyze URL</span>
+                        </button>
+                    </form>
+
+                    <!-- Inline Input Validation Error Banner -->
+                    <div id="inputValidationError" class="input-error-banner hidden" role="alert">
+                        <span class="error-icon">⚠️</span>
+                        <span id="inputErrorMessage" class="error-text"></span>
+                    </div>
+
+                    <!-- Quick Sample Presets -->
+                    <div class="sample-presets">
+                        <div class="presets-header">
+                            <span class="presets-label">⚡ Test Datasets (Pre-Configured Samples):</span>
+                        </div>
+                        <div class="preset-badges" id="presetBadges">
+                            <button type="button" class="preset-chip chip-safe" onclick="setSampleUrl('https://github.com/torvalds/linux')">
+                                <span class="preset-dot"></span>Safe: GitHub
+                            </button>
+                            <button type="button" class="preset-chip chip-safe" onclick="setSampleUrl('https://en.wikipedia.org/wiki/Computer_security')">
+                                <span class="preset-dot"></span>Safe: Wikipedia
+                            </button>
+                            <button type="button" class="preset-chip chip-phish" onclick="setSampleUrl('http://paypal-verification-secure-account.com/login.php')">
+                                <span class="preset-dot"></span>Phishing: Fake PayPal
+                            </button>
+                            <button type="button" class="preset-chip chip-phish" onclick="setSampleUrl('http://appleid.apple.com-verify-account.info/auth/login')">
+                                <span class="preset-dot"></span>Phishing: AppleID Lure
+                            </button>
+                            <button type="button" class="preset-chip chip-malicious" onclick="setSampleUrl('http://192.168.1.100/payload.exe')">
+                                <span class="preset-dot"></span>Malicious: Raw IP Binary
+                            </button>
+                            <button type="button" class="preset-chip chip-suspicious" onclick="setSampleUrl('http://bit.ly/3x8AbCd')">
+                                <span class="preset-dot"></span>Suspicious: Shortener
+                            </button>
+                            <button type="button" class="preset-chip chip-suspicious" onclick="setSampleUrl('http://paypal.com@attacker-controlled-server.net/login')">
+                                <span class="preset-dot"></span>Suspicious: @ Spoof
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Scanning / Processing Indicator -->
+                    <div id="scanLoader" class="scan-loader hidden" aria-live="polite">
+                        <div class="radar-spinner"></div>
+                        <div class="loader-status">
+                            <span class="loader-title" id="loaderPhaseText">Extracting Lexical Vectors...</span>
+                            <span class="loader-sub">Isolated static analysis • 0 packets sent to target</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analysis Results Panel -->
+                <div id="resultsContainer" class="cyber-panel results-panel hidden" tabindex="-1">
+                    <div class="panel-header result-panel-header">
+                        <span class="panel-tag">[ SCAN_VERDICT ]</span>
+                        <span class="timestamp-tag" id="resTimestamp">Just now</span>
+                    </div>
+
+                    <!-- Top Verdict Hero Card -->
+                    <div class="verdict-hero" id="verdictHero">
+                        <div class="verdict-icon-container">
+                            <div class="verdict-icon" id="verdictIcon">🛡️</div>
+                        </div>
+                        <div class="verdict-meta">
+                            <div class="verdict-headline">
+                                <span class="verdict-badge" id="resCategoryBadge">SAFE</span>
+                                <span class="verdict-level" id="resRiskLevel">Low Risk</span>
+                            </div>
+                            <div class="verdict-target-url" id="resAnalyzedUrl">--</div>
+                        </div>
+
+                        <!-- Circular Gauge Risk Score Meter -->
+                        <div class="risk-meter-box">
+                            <div class="risk-circle-wrapper">
+                                <svg class="risk-svg" viewBox="0 0 100 100">
+                                    <circle class="risk-bg-circle" cx="50" cy="50" r="42"></circle>
+                                    <circle class="risk-bar-circle" id="riskMeterCircle" cx="50" cy="50" r="42"></circle>
+                                </svg>
+                                <div class="risk-circle-text">
+                                    <span class="risk-number" id="resRiskScore">0</span>
+                                    <span class="risk-unit">%</span>
+                                </div>
+                            </div>
+                            <span class="risk-meter-label">RISK SCORE</span>
+                        </div>
+                    </div>
+
+                    <!-- Recommendation Banner -->
+                    <div class="recommendation-box" id="resRecommendationBox">
+                        <span class="rec-icon" id="recIcon">ℹ️</span>
+                        <div class="rec-content">
+                            <span class="rec-label">ANALYST ADVISORY:</span>
+                            <p class="rec-text" id="resRecommendationText">Evaluating safety profile...</p>
+                        </div>
+                    </div>
+
+                    <!-- Multi-Class ML Probabilities Breakdown -->
+                    <div class="probability-section">
+                        <div class="section-title">
+                            <span>MACHINE LEARNING CLASSIFICATION PROBABILITIES</span>
+                            <span class="confidence-badge" id="resConfidence">98.5% Confidence</span>
+                        </div>
+                        <div class="prob-bars-grid">
+                            <div class="prob-row">
+                                <div class="prob-header">
+                                    <span class="prob-label">Safe URL</span>
+                                    <span class="prob-val" id="probSafeVal">0%</span>
+                                </div>
+                                <div class="prob-track">
+                                    <div class="prob-fill fill-safe" id="probSafeBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="prob-row">
+                                <div class="prob-header">
+                                    <span class="prob-label">Suspicious</span>
+                                    <span class="prob-val" id="probSuspiciousVal">0%</span>
+                                </div>
+                                <div class="prob-track">
+                                    <div class="prob-fill fill-suspicious" id="probSuspiciousBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="prob-row">
+                                <div class="prob-header">
+                                    <span class="prob-label">Phishing URL</span>
+                                    <span class="prob-val" id="probPhishingVal">0%</span>
+                                </div>
+                                <div class="prob-track">
+                                    <div class="prob-fill fill-phishing" id="probPhishingBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="prob-row">
+                                <div class="prob-header">
+                                    <span class="prob-label">Malicious URL</span>
+                                    <span class="prob-val" id="probMaliciousVal">0%</span>
+                                </div>
+                                <div class="prob-track">
+                                    <div class="prob-fill fill-malicious" id="probMaliciousBar" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Detected Red Flags List -->
+                    <div class="red-flags-section" id="redFlagsContainer">
+                        <div class="section-title">
+                            <span>DETECTED ANOMALIES &amp; THREAT INDICATORS</span>
+                            <span class="flags-count-badge" id="redFlagsCount">0 Detected</span>
+                        </div>
+                        <ul class="flags-list" id="redFlagsList">
+                            <!-- Populated dynamically via JS -->
+                        </ul>
+                    </div>
+
+                    <!-- Detailed Feature Breakdown Matrix -->
+                    <div class="features-section">
+                        <div class="section-title">
+                            <span>EXTRACTED URL FEATURE MATRIX</span>
+                            <span class="features-subtitle">18 Lexical &amp; Structural Attributes</span>
+                        </div>
+                        <div class="features-grid" id="featuresGrid">
+                            <!-- Populated dynamically via JS -->
+                        </div>
+                    </div>
+
+                    <!-- AI Prediction Disclaimer Warning Banner -->
+                    <div class="prediction-disclaimer-card">
+                        <div class="pred-disc-icon">⚠️</div>
+                        <div class="pred-disc-content">
+                            <strong>Probabilistic Model Warning:</strong>
+                            This classification is a predictive assessment derived from static lexical properties and pattern recognition. It is not an absolute security guarantee. Always apply multi-layered cybersecurity controls including TLS inspection, DNS reputation, and endpoint protections.
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Right Column: Visualizations & SQLite History -->
+            <aside class="sidebar-column">
+                <!-- Threat Distribution Chart -->
+                <div class="cyber-panel chart-panel" id="chartPanel">
+                    <div class="panel-header">
+                        <span class="panel-tag">[ THREAT_DISTRIBUTION ]</span>
+                        <h3>Detection Analytics</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="threatDoughnutChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- SQLite History Table -->
+                <div class="cyber-panel history-panel" id="historyPanel">
+                    <div class="panel-header history-header">
+                        <div>
+                            <span class="panel-tag">[ SQLITE_LOGS ]</span>
+                            <h3>Recent URL Scans</h3>
+                        </div>
+                        <button type="button" class="btn-clear-history" id="btnClearHistory" onclick="clearHistory()" title="Clear Database History">
+                            🗑️ Clear
+                        </button>
+                    </div>
+
+                    <div class="history-table-wrapper">
+                        <table class="history-table" id="historyTable">
+                            <thead>
+                                <tr>
+                                    <th>URL</th>
+                                    <th>Category</th>
+                                    <th>Risk</th>
+                                    <th>Time</th>
+                                </tr>
+                            </thead>
+                            <tbody id="historyBody">
+                                <!-- Populated dynamically from SQLite -->
+                                <tr>
+                                    <td colspan="4" class="text-center">Loading scan history...</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </aside>
+        </div>
+
+        <!-- Educational Disclaimer Footer -->
+        <footer class="soc-footer">
+            <div class="disclaimer-badge">
+                <span class="disclaimer-icon">🛡️</span>
+                <div class="disclaimer-text">
+                    <strong>Educational Cybersecurity Notice:</strong>
+                    This detection system analyzes URLs purely statically via isolated lexical extraction without making outbound network requests or executing web code. Machine learning models produce probabilistic classifications that should complement multi-layered defensive controls.
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <div class="footer-meta">
+                    <span>Malicious URL Detection System • Flask • Scikit-Learn • SQLite • Chart.js</span>
+                </div>
+                <div class="footer-links">
+                    <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="footer-link">GitHub Repository</a>
+                    <span class="footer-sep">•</span>
+                    <a href="#scannerConsole" class="footer-link">Scanner</a>
+                    <span class="footer-sep">•</span>
+                    <a href="#kpiMetrics" class="footer-link">Metrics</a>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Notification Toast Element -->
+    <div id="toastNotification" class="toast hidden" role="status"></div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
